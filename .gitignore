@@ -1,0 +1,37 @@
+# Arquivos gerados pelo Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.pkl
+
+# Ambientes virtuais
+env/
+venv/
+.venv/
+ENV/
+.ENV/
+env.bak/
+venv.bak/
+.venv_tree/
+
+# Configurações do Jupyter Notebook
+.ipynb_checkpoints/
+
+# Arquivos do sistema operacional
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs
+*.log
+*.out
+*.err
+
+# Configurações de IDEs (PyCharm, VSCode, etc.)
+.vscode/
+.idea/
+*.swp
+
+# Streamlit (cache local)
+.streamlit/
