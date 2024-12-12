@@ -33,5 +33,5 @@ desktop.ini
 .idea/
 *.swp
 
-# Streamlit (cache local)
-.streamlit/
+# # Streamlit (cache local)
+# .streamlit/
