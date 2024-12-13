@@ -1,7 +1,7 @@
 [theme]
 base="dark"
-primaryColor="#28B898" # Cor primária (azul forte, ajuste conforme necessário)
-backgroundColor = "#0E1117"  # Cor de fundo principal (cinza escuro)
-secondaryBackgroundColor = "#161B22"  # Cor de fundo secundária (tom mais claro que o fundo principal)
-textColor = "#E8EAED"  # Cor do texto (quase branco para contraste)
-font = "sans serif"  # Fonte padrão, altere para "monospace" se preferir
+primaryColor="#3498DB"  # Azul vibrante e elegante
+backgroundColor="#101216"  # Fundo levemente azul escuro
+secondaryBackgroundColor="#22303C"  # Fundo secundário em cinza-azulado
+textColor="#F5F5F5"  # Branco puro para máximo contraste
+font="sans serif"

@@ -715,6 +715,164 @@ def buscar_filhos_dos_primos_quinto_grau(df, pessoa_id):
 
 def imprimir_familia_extensa(df, pessoa_id):
     nome_completo = buscar_nome_sobrenome_por_id(df, pessoa_id)
+
+    # Função auxiliar para buscar dados do parente
+    def obter_dados_parente(df, parente_id):
+        if parente_id in df.index:
+            nome = buscar_nome_sobrenome_por_id(df, parente_id)
+            identificador = df.at[parente_id, "Identificador"]
+            return {'ID': parente_id, 'Nome Completo': nome, 'Identificador': identificador}
+        else:
+            return {'ID': parente_id, 'Nome Completo': "Desconhecido", 'Identificador': "Desconhecido"}
+
+    # Pais
+    pais_ids = buscar_pais(df, pessoa_id)
+    pais = []
+    if pais_ids['pai']:
+        pais.append(obter_dados_parente(df, pais_ids['pai']))
+    if pais_ids['mae']:
+        pais.append(obter_dados_parente(df, pais_ids['mae']))
+    imprimir_parentes(df, pessoa_id, pais, "Pais")
+
+    # Filhos
+    filhos = [obter_dados_parente(df, filho_id) for filho_id in buscar_filhos(df, pessoa_id)]
+    imprimir_parentes(df, pessoa_id, filhos, "Filhos")
+
+    # Irmãos
+    irmaos = [obter_dados_parente(df, irmao_id) for irmao_id in buscar_irmaos(df, pessoa_id)]
+    imprimir_parentes(df, pessoa_id, irmaos, "Irmãos")
+
+    # Sobrinhos
+    sobrinhos = [obter_dados_parente(df, sobrinho_id) for sobrinho_id in buscar_sobrinhos(df, pessoa_id)]
+    imprimir_parentes(df, pessoa_id, sobrinhos, "Sobrinhos")
+
+    # Avós
+    avos = [obter_dados_parente(df, avo_id) for avo_id in buscar_avos(df, pessoa_id)]
+    imprimir_parentes(df, pessoa_id, avos, "Avós")
+
+    # Tios
+    tios = [obter_dados_parente(df, tio_id) for tio_id in buscar_tios(df, pessoa_id)]
+    imprimir_parentes(df, pessoa_id, tios, "Tios")
+
+    # Primos de primeiro grau
+    primos_primeiro_grau = [
+        obter_dados_parente(df, primo_id) for primo_id in buscar_primos_primeiro_grau(df, pessoa_id)
+    ]
+    imprimir_parentes(df, pessoa_id, primos_primeiro_grau, "Primos de Primeiro Grau")
+
+    # Filhos dos primos de primeiro grau
+    filhos_dos_primos = [
+        obter_dados_parente(df, filho_id) for filho_id in buscar_filhos_dos_primos_primeiro_grau(df, pessoa_id)
+    ]
+    imprimir_parentes(df, pessoa_id, filhos_dos_primos, "Filhos dos Primos de 1º Grau")
+
+    # Bisavós
+    bisavos = [obter_dados_parente(df, bisavo_id) for bisavo_id in buscar_bisavos(df, pessoa_id)]
+    imprimir_parentes(df, pessoa_id, bisavos, "Bisavós")
+
+    # Tios-avós
+    tios_avos = [obter_dados_parente(df, tio_avo_id) for tio_avo_id in buscar_tios_avos(df, pessoa_id)]
+    imprimir_parentes(df, pessoa_id, tios_avos, "Tios-avós")
+
+    # Primo(a) de 1º grau do pai/da mãe
+    primos_primeiro_grau_pais = [
+        obter_dados_parente(df, primo_id) for primo_id in buscar_primos_primeiro_grau_dos_pais(df, pessoa_id)
+    ]
+    imprimir_parentes(df, pessoa_id, primos_primeiro_grau_pais, "Primo(a) de 1º Grau do Pai/da Mãe")
+
+    # Primo(a) de 2º grau
+    primos_segundo_grau = [
+        obter_dados_parente(df, primo_id) for primo_id in buscar_primos_segundo_grau(df, pessoa_id)
+    ]
+    imprimir_parentes(df, pessoa_id, primos_segundo_grau, "Primo(a) de 2º Grau")
+
+    # Filho(a) do(a) primo(a) de 2º grau
+    filhos_primos_segundo_grau = [
+        obter_dados_parente(df, filho_id) for filho_id in buscar_filhos_dos_primos_segundo_grau(df, pessoa_id)
+    ]
+    imprimir_parentes(df, pessoa_id, filhos_primos_segundo_grau, "Filho(a) do(a) Primo(a) de 2º Grau")
+
+    # Trisavós
+    trisavos = [obter_dados_parente(df, trisavo_id) for trisavo_id in buscar_trisavos(df, pessoa_id)]
+    imprimir_parentes(df, pessoa_id, trisavos, "Trisavós")
+
+    # Tio-bisavô/tia-bisavó
+    tios_bisavos = [obter_dados_parente(df, tio_id) for tio_id in buscar_tios_bisavos(df, pessoa_id)]
+    imprimir_parentes(df, pessoa_id, tios_bisavos, "Tio-bisavô/Tia-bisavó")
+
+    # Primo(a) de 1º grau do avô/da avó
+    primos_primeiro_grau_avos = [
+        obter_dados_parente(df, primo_id) for primo_id in buscar_primos_primeiro_grau_dos_avos(df, pessoa_id)
+    ]
+    imprimir_parentes(df, pessoa_id, primos_primeiro_grau_avos, "Primo(a) de 1º Grau do Avô/da Avó")
+
+    # Primo(a) de 2º grau do pai/da mãe
+    primos_segundo_grau_pais = [
+        obter_dados_parente(df, primo_id) for primo_id in buscar_primos_segundo_grau_dos_pais(df, pessoa_id)
+    ]
+    imprimir_parentes(df, pessoa_id, primos_segundo_grau_pais, "Primo(a) de 2º Grau do Pai/da Mãe")
+
+    # Primo(a) de 3º grau
+    primos_terceiro_grau = [
+        obter_dados_parente(df, primo_id) for primo_id in buscar_primos_terceiro_grau(df, pessoa_id)
+    ]
+    imprimir_parentes(df, pessoa_id, primos_terceiro_grau, "Primo(a) de 3º Grau")
+
+    # Filho(a) do(a) primo(a) de 3º grau
+    filhos_primos_terceiro_grau = [
+        obter_dados_parente(df, filho_id) for filho_id in buscar_filhos_dos_primos_terceiro_grau(df, pessoa_id)
+    ]
+    imprimir_parentes(df, pessoa_id, filhos_primos_terceiro_grau, "Filho(a) do(a) Primo(a) de 3º Grau")
+
+    # Tetravós
+    tetravos = [obter_dados_parente(df, tetravo_id) for tetravo_id in buscar_tetravos(df, pessoa_id)]
+    imprimir_parentes(df, pessoa_id, tetravos, "Tetravós")
+
+    # Tio-trisavô/Tia-trisavó
+    tios_trisavos = [
+        obter_dados_parente(df, tio_id) for tio_id in buscar_tios_trisavos(df, pessoa_id)
+    ]
+    imprimir_parentes(df, pessoa_id, tios_trisavos, "Tio-trisavô/Tia-trisavó")
+
+    # Primos de 1º Grau do Trisavô/da Trisavó
+    primos_primeiro_grau_trisavos = [
+        obter_dados_parente(df, primo_id) for primo_id in buscar_primos_primeiro_grau_dos_trisavos(df, pessoa_id)
+    ]
+    imprimir_parentes(df, pessoa_id, primos_primeiro_grau_trisavos, "Primos de 1º Grau do Trisavô/da Trisavó")
+
+    # Primos de 2º Grau do Bisavô/da Bisavó
+    primos_segundo_grau_bisavos = [
+        obter_dados_parente(df, primo_id) for primo_id in buscar_primos_segundo_grau_dos_bisavos(df, pessoa_id)
+    ]
+    imprimir_parentes(df, pessoa_id, primos_segundo_grau_bisavos, "Primos de 2º Grau do Bisavô/da Bisavó")
+
+    # Primos de 3º Grau do Avô/da Avó
+    primos_terceiro_grau_avos = [
+        obter_dados_parente(df, primo_id) for primo_id in buscar_primos_terceiro_grau_dos_avos(df, pessoa_id)
+    ]
+    imprimir_parentes(df, pessoa_id, primos_terceiro_grau_avos, "Primos de 3º Grau do Avô/da Avó")
+
+    # Primos de 4º Grau do Pai/da Mãe
+    primos_quarto_grau_pais = [
+        obter_dados_parente(df, primo_id) for primo_id in buscar_primos_quarto_grau_dos_pais(df, pessoa_id)
+    ]
+    imprimir_parentes(df, pessoa_id, primos_quarto_grau_pais, "Primos de 4º Grau do Pai/da Mãe")
+
+    # Primos de 5º Grau
+    primos_quinto_grau = [
+        obter_dados_parente(df, primo_id) for primo_id in buscar_primos_quinto_grau(df, pessoa_id)
+    ]
+    imprimir_parentes(df, pessoa_id, primos_quinto_grau, "Primos de 5º Grau")
+
+    # Filhos dos Primos de 5º Grau
+    filhos_primos_quinto_grau = [
+        obter_dados_parente(df, filho_id) for filho_id in buscar_filhos_dos_primos_quinto_grau(df, pessoa_id)
+    ]
+    imprimir_parentes(df, pessoa_id, filhos_primos_quinto_grau, "Filhos dos Primos de 5º Grau")
+    
+# 
+def imprimir_familia_extensa(df, pessoa_id):
+    nome_completo = buscar_nome_sobrenome_por_id(df, pessoa_id)
     
     # Pais
     pais_ids = buscar_pais(df, pessoa_id)
@@ -863,7 +1021,7 @@ def imprimir_familia_extensa(df, pessoa_id):
 # ------------------------------------------------------------------------------------------------------------------------------------------    
 
 def imprimir_parentes(df, pessoa_id, parentes, parentesco):
-    """Imprime os nomes dos parentes baseado nos dicionários fornecidos."""
+    """Imprime os nomes e identificadores dos parentes baseado nos dicionários fornecidos."""
     nome_completo = buscar_nome_sobrenome_por_id(df, pessoa_id)
     print(f"\n{parentesco} de {nome_completo}:")
 
@@ -876,7 +1034,10 @@ def imprimir_parentes(df, pessoa_id, parentes, parentesco):
                     for parente in lista_parentes:
                         id_int = parente.get('ID')
                         nome_parente = buscar_nome_sobrenome_por_id(df, id_int) if id_int else "Desconhecido"
-                        print(f"  ID: {id_int}, Nome: {nome_parente}")
+                        identificador = (
+                            df.at[id_int, 'Identificador'] if id_int in df.index else "Desconhecido"
+                        )
+                        print(f"  ID: {id_int}, Nome: {nome_parente}, Identificador: {identificador}")
                 else:
                     print("  Nenhum encontrado")
         else:
@@ -884,14 +1045,18 @@ def imprimir_parentes(df, pessoa_id, parentes, parentesco):
             for categoria, id_int in parentes.items():
                 if id_int and id_int in df.index:
                     nome_parente = buscar_nome_sobrenome_por_id(df, id_int)
-                    print(f"  {categoria}: ID {id_int}, Nome: {nome_parente}")
+                    identificador = df.at[id_int, 'Identificador']
+                    print(f"  {categoria}: ID {id_int}, Nome: {nome_parente}, Identificador: {identificador}")
                 else:
                     print(f"  {categoria}: Nenhum encontrado")
     elif parentes:  # Trata o caso onde 'parentes' é uma lista de dicionários
         for parente in parentes:
             id_int = parente.get('ID')
             nome_parente = buscar_nome_sobrenome_por_id(df, id_int) if id_int else "Desconhecido"
-            print(f"  ID: {id_int}, Nome: {nome_parente}")
+            identificador = (
+                df.at[id_int, 'Identificador'] if id_int in df.index else "Desconhecido"
+            )
+            print(f"  ID: {id_int}, Nome: {nome_parente}, Identificador: {identificador}")
     else:
         print("  Nenhum parente encontrado na categoria.")
 
@@ -1383,3 +1548,113 @@ def exibir_antepassados_comuns_ordenados_pdf(df, id_referencia, ids_lista, retor
         return output_pdf if not output_buffer else None, texto_relatorio
 
     return output_pdf if not output_buffer else None
+
+
+# ------------------------------------------------------------------------------------------------------------------------------------------------
+
+from io import BytesIO
+from reportlab.lib.pagesizes import A4
+from reportlab.pdfgen import canvas
+
+def wrap_text(text, width, font_size, pdf_canvas):
+    """
+    Quebra o texto em linhas com base na largura especificada.
+    """
+    from reportlab.lib.utils import simpleSplit
+    return simpleSplit(text, pdf_canvas._fontname, font_size, width)
+
+def exibir_ancestrais_comuns_por_ocorrencia(df, ids_lista, id_especifico=None):
+    """
+    Exibe ancestrais comuns entre todos os IDs da lista, ou entre um ID específico e os demais.
+    Gera e retorna um relatório em PDF com título.
+    """
+    buffer = BytesIO()
+    pdf = canvas.Canvas(buffer, pagesize=A4)
+    width, height = A4
+    text_y_position = height - 40
+    max_line_width = width - 80
+
+    # Título do relatório
+    pdf.setFont("Helvetica-Bold", 14)
+    if id_especifico:
+        nome_referencia = df.loc[id_especifico, "Nome Completo"] if "Nome Completo" in df.columns else "Desconhecido"
+        identificador_referencia = df.loc[id_especifico, "Identificador"] if "Identificador" in df.columns else "Desconhecido"
+        titulo = f"Relatório de Ancestrais Comuns para:\n"
+        titulo += f"{nome_referencia} (ID: {id_especifico}, Identificador: {identificador_referencia})"
+    else:
+        titulo = "Relatório de Ancestrais Comuns para Todos os IDs"
+    lines = wrap_text(titulo, max_line_width, 14, pdf)
+    for line in lines:
+        pdf.drawString(40, text_y_position, line)
+        text_y_position -= 20
+
+    text_y_position -= 20  # Espaço após o título
+
+    if id_especifico:
+        ids_lista = [id_ for id_ in ids_lista if id_ != id_especifico]
+        antepassados_referencia = coletar_todos_antepassados(df, id_especifico)
+
+    # Coletar os antepassados para cada ID na lista fornecida
+    antepassados_por_id = {pessoa_id: coletar_todos_antepassados(df, pessoa_id) for pessoa_id in ids_lista}
+
+    # Criar um dicionário para agrupar os descendentes de cada ancestral comum
+    descendentes_por_ancestral = {}
+
+    # Iterar sobre os ancestrais e agrupar por ancestral comum
+    for pessoa_id, antepassados in antepassados_por_id.items():
+        for ancestral_id, grau in antepassados.items():
+            if id_especifico and ancestral_id not in antepassados_referencia:
+                continue
+            if ancestral_id not in descendentes_por_ancestral:
+                descendentes_por_ancestral[ancestral_id] = []
+            descendentes_por_ancestral[ancestral_id].append({
+                'ID': pessoa_id,
+                'ID FS': df.at[pessoa_id, 'Identificador'] if 'Identificador' in df.columns else "Desconhecido",
+                'Nome': buscar_nome_sobrenome_por_id(df, pessoa_id),
+                'Grau de Parentesco': geracao_para_termo(grau),
+                'Grau': grau
+            })
+
+    # Ordenar os ancestrais por quantidade de descendentes
+    descendentes_por_ancestral_ordenado = sorted(
+        descendentes_por_ancestral.items(),
+        key=lambda x: (-len(x[1]), x[0])
+    )
+
+    pdf.setFont("Helvetica", 10)
+    ancestrais_exibidos = False
+    for ancestral_id, descendentes in descendentes_por_ancestral_ordenado:
+        if len(descendentes) > 1 or id_especifico:
+            nome_ancestral = buscar_nome_sobrenome_por_id(df, ancestral_id)
+            identificador_ancestral = df.at[ancestral_id, 'Identificador'] if 'Identificador' in df.columns else "Desconhecido"
+            title_text = f"Ancestral Comum: {nome_ancestral} (ID: {ancestral_id}, Identificador: {identificador_ancestral}) - Descendentes: {len(descendentes)}"
+
+            pdf.setFont("Helvetica-Bold", 10)
+            lines = wrap_text(title_text, max_line_width, 10, pdf)
+            for line in lines:
+                pdf.drawString(40, text_y_position, line)
+                text_y_position -= 15
+
+            descendentes_df = pd.DataFrame(descendentes).sort_values(by=['Grau', 'ID'])
+            pdf.setFont("Helvetica", 10)
+            for _, row in descendentes_df.iterrows():
+                pdf.drawString(40, text_y_position, f"{row['ID FS']}")
+                pdf.drawString(120, text_y_position, f"Nome: {row['Nome']}")
+                pdf.drawString(320, text_y_position, f"{row['Grau de Parentesco']}")
+                pdf.drawString(500, text_y_position, f"Grau: {row['Grau']}")
+                text_y_position -= 15
+
+                if text_y_position < 40:
+                    pdf.showPage()
+                    pdf.setFont("Helvetica", 10)
+                    text_y_position = height - 40
+
+            ancestrais_exibidos = True
+            text_y_position -= 20
+
+    if not ancestrais_exibidos:
+        pdf.drawString(40, text_y_position, "Nenhum ancestral comum encontrado entre os IDs fornecidos.")
+
+    pdf.save()
+    buffer.seek(0)
+    return buffer
