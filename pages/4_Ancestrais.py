@@ -52,6 +52,10 @@ if "familia_df" not in st.session_state or st.session_state["familia_df"] is Non
 else:
     familia_df_IDs = st.session_state["familia_df"]
 
+
+    # print(familia_df_IDs.tail(10))  # Mostra os últimos 10 registros
+
+
     # Criar duas Colunas
     col1, col2 = st.columns(2)
 
