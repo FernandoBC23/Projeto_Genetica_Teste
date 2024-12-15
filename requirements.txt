@@ -3,3 +3,4 @@ streamlit
 reportlab
 openpyxl
 networkx
+plotly
