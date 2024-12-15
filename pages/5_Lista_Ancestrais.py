@@ -63,11 +63,17 @@ else:
                     id_especifico = int(id_input.strip())
                     buffer = exibir_ancestrais_comuns_por_ocorrencia(familia_df, ids_lista, id_especifico)
 
+                    # Obter o nome da pessoa referente ao ID
+                    nome_pessoa = familia_df.loc[id_especifico, "Nome Completo"] if "Nome Completo" in familia_df.columns else "Desconhecido"
+
+                    # Garantir que o nome está seguro para uso no nome do arquivo
+                    nome_pessoa_seguro = nome_pessoa.replace(" ", "_").replace("/", "_").replace("\\", "_")
+
                     st.success("Relatório gerado com sucesso!")
                     st.download_button(
                         label="📄 Baixar Relatório em PDF",
                         data=buffer,
-                        file_name=f"Relatorio_Ancestrais_ID_{id_especifico}.pdf",
+                        file_name=f"Relatorio Ancestrais - ID: {id_especifico} Nome:{nome_pessoa_seguro} .pdf",
                         mime="application/pdf"
                     )
             except Exception as e:
@@ -82,7 +88,7 @@ else:
                 st.download_button(
                     label="📄 Baixar Relatório em PDF",
                     data=buffer,
-                    file_name="Relatorio_Ancestrais_Todos_IDs.pdf",
+                    file_name="Relatorio Ancestrais - Todos_IDs.pdf",
                     mime="application/pdf"
                 )
             except Exception as e:

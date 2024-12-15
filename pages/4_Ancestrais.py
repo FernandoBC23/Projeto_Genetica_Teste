@@ -53,9 +53,6 @@ else:
     familia_df_IDs = st.session_state["familia_df"]
 
 
-    # print(familia_df_IDs.tail(10))  # Mostra os últimos 10 registros
-
-
     # Criar duas Colunas
     col1, col2 = st.columns(2)
 
@@ -161,7 +158,7 @@ else:
                 st.download_button(
                     label="📄 Baixar Relatório em PDF",
                     data=buffer,
-                    file_name=f"Relatorio Ancestrais - ID: {id_referencia} Nome: {nome_pessoa_seguro}.pdf",
+                    file_name=f"Relatorio Primeiros Ancestrais - ID: {id_referencia} Nome: {nome_pessoa_seguro}.pdf",
                     mime="application/pdf"
                     
                 )

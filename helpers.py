@@ -1278,7 +1278,7 @@ def exibir_antepassados_comuns_ordenados_pdf(df, id_referencia, ids_lista, retor
     max_line_width = width - 80
 
     ancestrais_agrupados = defaultdict(list)
-    texto_relatorio = f"Relatório de Ancestrais Comuns para: {nome_referencia} (ID: {id_referencia})\n\n"
+    texto_relatorio = f"Relatório dos Primeiros Ancestrais Comuns para: {nome_referencia} (ID: {id_referencia})\n\n"
 
     # Processar IDs de comparação
     for pessoa_id in ids_lista:
@@ -1367,14 +1367,14 @@ def criar_relatorios_para_ids(df, ids_referencia, ids_lista):
     print(f"Arquivos compactados em: {zip_file_name}")
 
 # Exemplo de uso:
-ids_referencia = [8193, 8177, 8166, 8150, 8122, 8072, 8065, 8050, 8028, 8008, 7977, 7968, 7937, 7953, 
+ids_referencia = [8230, 8209, 8193, 8177, 8166, 8150, 8122, 8072, 8065, 8050, 8028, 8008, 7977, 7968, 7937, 7953, 
                   7883, 7800, 7732, 7676, 7642, 180, 7574, 7565, 7514, 7469, 7466, 7443, 7414, 7409, 7397, 7387,
                   7334, 5430, 7298, 7245, 7199, 7190, 7159, 7122, 7050, 7051, 2920, 100, 6236, 6207,
                   5970, 874, 3544, 3545, 6960, 5800, 5588, 934, 712, 6483, 5856, 6778, 2868, 996, 997,
                   5244, 6170, 5471, 535, 2132, 6023, 657, 5151, 5879, 1994, 6106, 5963, 2526, 5305,
                   6534, 5229, 548, 6139, 4333, 6219, 7040, 6656, 6237, 6984, 6861, 6911, 1500, 6848]  # Lista de IDs de referência para os quais os relatórios serão gerados
 
-ids_lista = [8193, 8177, 8166, 8150, 8122, 8072, 8065, 8050, 8028, 8008, 7977, 7968, 7937, 7953, 
+ids_lista = [8230, 8209, 8193, 8177, 8166, 8150, 8122, 8072, 8065, 8050, 8028, 8008, 7977, 7968, 7937, 7953, 
              7883, 7800, 7732, 7676, 7642, 180, 7574, 7565, 7514, 7469, 7466, 7443, 7414, 7409, 7397, 7387,
              7334, 5430, 7298, 7245, 7199, 7190, 7159, 7122, 7050, 7051, 2920, 100, 6236, 6207,
              5970, 874, 3544, 3545, 6960, 5800, 5588, 934, 712, 6483, 5856, 6778, 2868, 996, 997,
@@ -1444,7 +1444,7 @@ def exibir_antepassados_comuns_ordenados_pdf(df, id_referencia, ids_lista, retor
 
     # Título do relatório
     pdf.setFont("Helvetica-Bold", 14)
-    titulo = f"Relatório de Ancestrais Comuns para:\n"
+    titulo = f"Relatório dos Primeiros Ancestrais Comuns para:\n"
     titulo += f"{nome_referencia} (ID: {id_referencia}, Identificador: {identificador_referencia})"
     lines = wrap_text(titulo, max_line_width, 14, pdf)
     for line in lines:
