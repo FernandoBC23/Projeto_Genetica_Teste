@@ -20,7 +20,7 @@ st.markdown("""
         /* Centralizar título, descrição e imagem */
         .centered-title {
             text-align: center;
-            font-size: 32px;
+            font-size: 28px;
             font-weight: bold;
             margin-bottom: 5px;
             color: #DAEAB5;
@@ -42,7 +42,22 @@ st.markdown("""
 
 # Título e descrição centralizados
 st.markdown('<h1 class="centered-title">👨‍👩‍👧 Comparador de Parentesco e Análise de Antepassados</h1>', unsafe_allow_html=True)
-st.markdown('<p class="centered-description">Adicionar uma descrição do que pode ser feito nesta página.</p>', unsafe_allow_html=True)
+st.markdown("""
+    <div style="text-align: center;
+                font-size: 16px;
+                color: #D9D3CC;
+                margin-top: 10px;
+                margin-bottom: 20px;
+                line-height: 1.5;">
+        Compare o <strong>grau de parentesco</strong> entre dois membros da família e identifique os 
+        <strong>antepassados comuns</strong>. 
+        <br><br>
+        A análise exibe de forma estruturada os <strong>parentescos diretos</strong> e os 
+        <strong>antepassados compartilhados</strong> entre os membros selecionados, facilitando o 
+        entendimento das conexões familiares.
+    </div>
+""", unsafe_allow_html=True)
+
 st.divider()
 
 # Recuperar DataFrame

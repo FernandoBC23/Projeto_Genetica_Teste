@@ -14,7 +14,7 @@ st.markdown(
         }
         .centered-title {
             text-align: center;
-            font-size: 32px;
+            font-size: 28px;
             font-weight: bold;
             margin-bottom: 5px;
             color: #DAEAB5;
@@ -32,7 +32,21 @@ st.markdown(
 
 # Título e descrição centralizados
 st.markdown('<h1 class="centered-title">🌟 Visualizar Família Extensa</h1>', unsafe_allow_html=True)
-st.markdown('<p class="centered-description">Adicionar uma descrição do que pode ser feito nesta página.</p>', unsafe_allow_html=True)
+# st.markdown('<p class="centered-description">""</p>', unsafe_allow_html=True)
+st.markdown("""
+    <div style="text-align: center;
+                font-size: 16px;
+                color: #D9D3CC;
+                margin-top: 10px;
+                margin-bottom: 20px;
+                line-height: 1.5;">
+        Explore a <strong>família extensa</strong> de um membro da árvore genealógica. 
+        Utilize o método de busca para visualizar parentes próximos e distantes, com detalhes como <strong>ID</strong>, <strong>nome</strong> 
+        e <strong>identificador</strong> organizados de forma clara e intuitiva.
+    </div>
+    """, unsafe_allow_html=True)
+
+
 st.divider()
 
 # Recuperar DataFrame
@@ -43,6 +57,7 @@ if "familia_df" not in st.session_state or st.session_state["familia_df"] is Non
     st.error("Os dados da família não foram carregados corretamente. Certifique-se de carregar os dados na página principal.")
 else:
     familia_df = st.session_state["familia_df"]
+
 
     # Criar duas Colunas
     col1, col2 = st.columns(2)
@@ -151,9 +166,6 @@ else:
                             st.markdown("<p style='color: #E74C3C;'>Nenhum parente encontrado.</p>", unsafe_allow_html=True)
             else:
                 st.warning(f"Nenhuma família extensa encontrada para o ID: {id_selecionado}.")
-
-
-
 
 
         except Exception as e:

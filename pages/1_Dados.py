@@ -12,7 +12,7 @@ st.markdown("""
         /* Centralizar título, descrição e imagem */
         .centered-title {
             text-align: center;
-            font-size: 32px;
+            font-size: 28px;
             font-weight: bold;
             margin-bottom: 5px;
             color: #DAEAB5;

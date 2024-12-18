@@ -21,7 +21,7 @@ st.markdown("""
         /* Centralizar título, descrição e imagem */
         .centered-title {
             text-align: center;
-            font-size: 32px;
+            font-size: 28px;
             font-weight: bold;
             margin-bottom: 5px;
             color: #DAEAB5;
@@ -43,7 +43,20 @@ st.markdown("""
 
 # Título e descrição centralizados
 st.markdown('<h1 class="centered-title">🌳 Relatório dos Primeiros Ancestrais em Comum</h1>', unsafe_allow_html=True)
-st.markdown('<p class="centered-description">Insira o ID, Identificador ou Nome Completo de referência abaixo para gerar e visualizar o relatório de ancestrais comuns.</p>', unsafe_allow_html=True)
+st.markdown("""
+    <div style="text-align: center;
+                font-size: 16px;
+                color: #D9D3CC;
+                margin-top: 10px;
+                margin-bottom: 20px;
+                line-height: 1.5;">
+        Gere um <strong>relatório dos PRIMEIROS ancestrais em comum</strong> a partir de um indivíduo de referência. 
+        <br><br>
+        O relatório apresenta os ancestrais ordenados, o <strong>grau de parentesco</strong> 
+        com o indivíduo de referência e permite o <strong>download</strong> do resultado em PDF.
+    </div>
+""", unsafe_allow_html=True)
+
 st.divider()
 
 # Verificar se o DataFrame está carregado

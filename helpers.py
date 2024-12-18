@@ -6,6 +6,7 @@ from reportlab.pdfgen import canvas
 from reportlab.lib.utils import simpleSplit
 from collections import defaultdict
 import streamlit as st
+import re
 
 # Função para carregar o DataFrame
 def carregar_dataframe(caminho):
@@ -1564,6 +1565,8 @@ def wrap_text(text, width, font_size, pdf_canvas):
     from reportlab.lib.utils import simpleSplit
     return simpleSplit(text, pdf_canvas._fontname, font_size, width)
 
+# ------------------------------------------------------------------------------------------------------------------
+
 def exibir_ancestrais_comuns_por_ocorrencia(df, ids_lista, id_especifico=None):
     """
     Exibe ancestrais comuns entre todos os IDs da lista, ou entre um ID específico e os demais.
@@ -1668,3 +1671,126 @@ def buscar_nome_sobrenome_por_id(df, pessoa_id):
         sobrenome = df.at[pessoa_id, 'Sobrenome'] if 'Sobrenome' in df.columns else ""
         return f"{nome} {sobrenome}".strip()
     return "Desconhecido"
+
+# -------------------------------------------------------------------------------------------------
+
+def gerar_relatorio_visualizacao(df, ids_lista, id_especifico=None):
+    """
+    Gera uma visualização formatada para o Streamlit no estilo fornecido,
+    com destaque para ancestrais e correção do "Parentesco com Referência".
+    """
+    from collections import defaultdict
+
+    # Início do relatório
+    st.markdown("## Relatório de Ancestrais Comuns para:")
+
+    if id_especifico:
+        nome_referencia = df.loc[id_especifico, "Nome Completo"] if "Nome Completo" in df.columns else "Desconhecido"
+        st.markdown(f"""
+        <div style="background-color: #1E293B; color: #FFFFFF; padding: 10px; border-radius: 5px; margin-bottom: 10px;">
+            <strong>ID de Referência: {id_especifico} | Nome: {nome_referencia}</strong>
+        </div>
+        """, unsafe_allow_html=True)
+
+    # Coletar dados de ancestrais comuns
+    descendentes_por_ancestral = defaultdict(list)
+
+    if id_especifico:
+        ids_lista = [id_ for id_ in ids_lista if id_ != id_especifico]
+        antepassados_referencia = coletar_todos_antepassados(df, id_especifico)
+    else:
+        antepassados_referencia = None
+
+    # Organizar descendentes por ancestral comum
+    for pessoa_id in ids_lista:
+        antepassados = coletar_todos_antepassados(df, pessoa_id)
+        for ancestral_id, grau in antepassados.items():
+            if id_especifico and ancestral_id not in antepassados_referencia:
+                continue
+            descendentes_por_ancestral[ancestral_id].append({
+                'ID': pessoa_id,
+                'Nome': buscar_nome_sobrenome_por_id(df, pessoa_id),
+                'Grau': geracao_para_termo(grau)
+            })
+
+    # Ordenar ancestrais por quantidade de descendentes
+    ancestrais_ordenados = sorted(
+        descendentes_por_ancestral.items(),
+        key=lambda x: (-len(x[1]), x[0])
+    )
+
+    # Exibir o relatório com destaques
+    for ancestral_id, descendentes in ancestrais_ordenados:
+        if len(descendentes) > 1 or id_especifico:
+            nome_ancestral = buscar_nome_sobrenome_por_id(df, ancestral_id)
+            identificador = df.at[ancestral_id, 'Identificador'] if 'Identificador' in df.columns else "Desconhecido"
+
+            # Calcular o grau de parentesco com o ID de referência
+            grau_parentesco_referencia = antepassados_referencia.get(ancestral_id, None) if antepassados_referencia else None
+            if grau_parentesco_referencia is not None:
+                parentesco_referencia = geracao_para_termo(grau_parentesco_referencia)
+            else:
+                parentesco_referencia = "Indefinido"
+
+            # Destaque do ancestral comum
+            st.markdown(f"""
+            <div style="background-color: #111827; color: #FFFFFF; padding: 10px; border-radius: 5px; margin-top: 10px;">
+                <strong>Ancestral Comum: {nome_ancestral} (ID: {ancestral_id} | Identificador: {identificador}) 
+                (Parentesco com Referência: {parentesco_referencia})</strong>
+            </div>
+            """, unsafe_allow_html=True)
+
+            # Montar os descendentes como tabela
+            tabela_descendentes = {
+                "ID": [d['ID'] for d in descendentes],
+                "Nome": [d['Nome'] for d in descendentes],
+                "Grau": [d['Grau'] for d in descendentes]
+            }
+            st.table(tabela_descendentes)
+
+    if not descendentes_por_ancestral:
+        st.warning("Nenhum ancestral comum encontrado.")
+
+# -------------------------------------------------------------------------------------------------------------------------------
+
+def separar_ids_por_relacao_via_ancestrais(df, ids_lista, id1, id2):
+    """
+    Separa os IDs dos matches em grupos com base nos ancestrais comuns e descendentes
+    de dois IDs de referência.
+
+    Parâmetros:
+        df: DataFrame contendo os dados.
+        ids_lista: Lista de IDs (matches) a serem analisados.
+        id1: Primeiro ID de referência.
+        id2: Segundo ID de referência.
+
+    Retorna:
+        ids_ambos: IDs relacionados a ambos os IDs de referência.
+        ids_somente_id1: IDs relacionados apenas ao ID1.
+        ids_somente_id2: IDs relacionados apenas ao ID2.
+        ids_nenhum: IDs não relacionados a nenhum dos dois IDs.
+    """
+    # Gerar os descendentes para ID1 e ID2 usando a função existente
+    buffer_id1, texto_id1 = exibir_ancestrais_comuns_por_ocorrencia(df, ids_lista, id1, retornar_texto=True)
+    buffer_id2, texto_id2 = exibir_ancestrais_comuns_por_ocorrencia(df, ids_lista, id2, retornar_texto=True)
+
+    # Extrair os IDs dos descendentes a partir do texto retornado
+    def extrair_ids_do_texto(texto):
+        """Extrai IDs do texto retornado pela função de ancestrais."""
+        ids_encontrados = set()
+        for linha in texto.split("\n"):
+            match = re.search(r"ID:\s*(\d+)", linha)  # Procura padrões como 'ID: 123'
+            if match:
+                ids_encontrados.add(int(match.group(1)))
+        return sorted(ids_encontrados)
+
+    ids_descendentes_id1 = extrair_ids_do_texto(texto_id1)
+    ids_descendentes_id2 = extrair_ids_do_texto(texto_id2)
+
+    # Cruzar as informações para formar os grupos
+    ids_ambos = sorted(ids_descendentes_id1 & ids_descendentes_id2)  # IDs comuns
+    ids_somente_id1 = sorted(ids_descendentes_id1 - ids_descendentes_id2)  # Somente ID1
+    ids_somente_id2 = sorted(ids_descendentes_id2 - ids_descendentes_id1)  # Somente ID2
+    ids_nenhum = sorted(set(ids_lista) - ids_descendentes_id1 - ids_descendentes_id2)  # Nenhum
+
+    return ids_ambos, ids_somente_id1, ids_somente_id2, ids_nenhum
